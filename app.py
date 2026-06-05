@@ -316,7 +316,7 @@ with tab_report:
     with c1:
         rep_month = st.selectbox("মাস খতিয়ান", months, index=datetime.now().month - 1, key="rep_m")
     with c2:
-        rep_class = st.selectbox("জاماআত খতিয়ান", classes, key="rep_c")
+        rep_class = st.selectbox("জামাআত খতিয়ান", classes, key="rep_c")
         
     total_target_fee = 0
     if rep_class in st.session_state.student_database:
