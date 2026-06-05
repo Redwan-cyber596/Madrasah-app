@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 import streamlit as st
 
-# পেজ কনফিগারেশন (ওয়েব অ্যাপের টাইটেল ও লেআউট)
+# পেজ推নফিগারেশন (ওয়েব অ্যাপের টাইটেল ও লেআউট)
 st.set_page_config(
     page_title="আল জামিয়াতুল ইসলামিয়া মদীনাতুল উলূম জামতলা মাদরাসা",
     page_icon="🕌",
@@ -29,7 +29,7 @@ DB_FILE = "madrasah_database.json"
 
 # খানা নম্বরের জন্য স্ট্রিমলিট মেমোরি বা সেশন স্টেট সেটআপ
 if 'khana_input' not in st.session_state:
-    st.session_state.khana_input = "1"  # শুরুতে খানা নম্বর ১ থেকে শুরু হবে
+    st.session_state.khana_input = ""  # শুরুতে খালি থাকবে
 
 # ====== ডাটাবেজ লোড ও সেভ ফাংশন ======
 def load_database():
@@ -82,7 +82,7 @@ st.markdown("<h1 style='text-align: center; color: #0f172a;'>আল জামি
 st.markdown("<p style='text-align: center; color: #475569; font-style: italic;'>পীরগঞ্জ, রংপুর — ডিজিটাল ক্লাউড ম্যানেজমেন্ট সিস্টেম</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# ====== ネভিগেশন মেনু (ট্যাব সিস্টেম) ======
+# ====== নেভিগেশন মেনু (ট্যাব সিস্টেম) ======
 tab_home, tab_payment, tab_student, tab_report = st.tabs([
     "🏠 মাসিক ফি আদায় প্যানেল", 
     "📝 ফি প্রদান লেজার", 
@@ -103,7 +103,6 @@ with tab_home:
         st.subheader("অনুসন্ধান ফিল্টার")
         selected_class = st.selectbox("জামাআত নির্বাচন করুন", classes, key="home_class")
         
-        # স্বয়ংক্রিয়ভাবে আপডেট হওয়া খানা নম্বর ইনপুট বক্স
         khana_entry = st.text_input("খানা নম্বর লিখুন", value=st.session_state.khana_input, key="khana_field")
         
         student_found = None
@@ -142,8 +141,8 @@ with tab_home:
             
             # পূর্ব বকেয়া হিসাব
             for rec in st.session_state.payment_records:
-                if rec["জামাআত"] == selected_class and clean_num(rec["খানা নং"]) == clean_num(khana_entry):
-                    try: prev_due_val += int(clean_num(rec["বকেয়া"]))
+                if rec.get("জামাআত") == selected_class and clean_num(rec.get("খানা নং", "")) == clean_num(khana_entry):
+                    try: prev_due_val += int(clean_num(rec.get("বকেয়া", 0)))
                     except: pass
 
         # ডিসপ্লে ফিল্ড (Read-only এর মতো দেখানোর জন্য)
@@ -184,7 +183,7 @@ with tab_home:
                 # পুরাতন ডুপ্লিকেট রেকর্ড রিমুভ করা
                 st.session_state.payment_records = [
                     r for r in st.session_state.payment_records 
-                    if not (r["জামাআত"] == selected_class and clean_num(r["খানা নং"]) == khana_clean and r["মাস"] == selected_month)
+                    if not (r.get("জামাআত") == selected_class and clean_num(r.get("খানা নং", "")) == khana_clean and r.get("মাস") == selected_month)
                 ]
                 
                 # নতুন রেকর্ড যুক্ত করা
@@ -238,7 +237,7 @@ with tab_payment:
                 for _, row in df_pay.iterrows():
                     if pd.notna(row.get(name_col)):
                         k_clean = clean_num(row.get(khana_col, ""))
-                        st.session_state.payment_records = [r for r in st.session_state.payment_records if not (r["জামাআত"] == pay_filter_class and clean_num(r["খানা নং"]) == k_clean and r["মাস"] == pay_filter_month)]
+                        st.session_state.payment_records = [r for r in st.session_state.payment_records if not (r.get("জামাআত") == pay_filter_class and clean_num(r.get("খানা নং", "")) == k_clean and r.get("মাস") == pay_filter_month)]
                         
                         st.session_state.payment_records.append({
                             "জاماআত": pay_filter_class, "খানা নং": k_clean, "নাম": str(row.get(name_col, "")),
@@ -252,7 +251,7 @@ with tab_payment:
             except Exception as e:
                 st.error(f"ফাইল প্রসেস করতে সমস্যা হয়েছে: {e}")
 
-    report_list = [r for r in st.session_state.payment_records if r["জاماআত"] == pay_filter_class and r["মাস"] == pay_filter_month]
+    report_list = [r for r in st.session_state.payment_records if r.get("জاماআত") == pay_filter_class and r.get("মাস") == pay_filter_month]
     if report_list:
         df_report = pd.DataFrame(report_list)[["খানা নং", "নাম", "পিতা", "তারিখ", "ফি প্রদান", "বকেয়া", "রшив নং"]]
         st.dataframe(df_report, use_container_width=True)
@@ -329,10 +328,10 @@ with tab_report:
                     
     total_paid, total_due = 0, 0
     for r in st.session_state.payment_records:
-        if r["জামাআত"] == rep_class and r["মাস"] == rep_month:
-            try: total_paid += int(clean_num(r["ফি প্রদান"]))
+        if r.get("জاماআত") == rep_class and r.get("মাস") == rep_month:
+            try: total_paid += int(clean_num(r.get("ফি প্রদান")))
             except: pass
-            try: total_due += int(clean_num(r["বকেয়া"]))
+            try: total_due += int(clean_num(r.get("বকেয়া")))
             except: pass
             
     m1, m2, m3 = st.columns(3)
@@ -349,7 +348,7 @@ with tab_report:
         <h2>মাসিক আর্থিক খতিয়ান রিপোর্ট</h2>
         <p><b>জামাআত:</b> {rep_class} | <b>মাস:</b> {rep_month}</p><hr>
         <p style='color:blue;'><b>মোট নির্ধারিত ফি:</b> {total_target_fee} টাকা</p>
-        <p style='color:green;'><b>মোট আদায়কৃত phi:</b> {total_paid} টাকা</p>
+        <p style='color:green;'><b>মোট আদায়কৃত ফি:</b> {total_paid} টাকা</p>
         <p style='color:red;'><b>মোট বকেয়া:</b> {total_due} টাকা</p>
     </div>
     <script>window.print();</script>
