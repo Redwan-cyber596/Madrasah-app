@@ -245,7 +245,7 @@ with tab_payment:
         st.dataframe(df_report, use_container_width=True)
         
         # এক্সেল ডাউনলোড বাটন
-        excel_data = df_report.to_excel(index=False, header=True)
+        df_report.to_excel("madrasah_report.xlsx", index=False, header=True)
         st.download_button("এক্সেল ফাইল ডাউনলোড করুন 📥", data=df_report.to_csv(index=False).encode('utf-8'), file_name=f"{pay_filter_class}_{pay_filter_month}.csv", mime="text/csv")
     else:
         st.info("এই ফিল্টারে কোনো ডাটা পাওয়া যায়নি।")
