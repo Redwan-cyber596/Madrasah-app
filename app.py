@@ -5,10 +5,25 @@ from datetime import datetime
 import streamlit as st
 
 # পেজ কনফিগারেশন (ওয়েব অ্যাপের টাইটেল ও লেআউট)
+# পেজ কনফিগারেশন (ওয়েব অ্যাপের টাইটেল ও লেআউট)
 st.set_page_config(
     page_title="আল জামিয়াতুল ইসলামিয়া মদীনাতুল উলূম জামতলা মাদরাসা",
     page_icon="🕌",
     layout="wide"
+)
+
+# বাংলা ফন্ট (SolaimanLipi) সুন্দর করার জন্য CSS কোড
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
+    
+    html, body, [data-testid="stSidebar"], .stMarkdown, p, h1, h2, h3, h4, h5, h6, span, label, input, button, select {
+        font-family: 'SolaimanLipi', 'Hind Siliguri', sans-serif !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
 )
 
 DB_FILE = "madrasah_database.json"
