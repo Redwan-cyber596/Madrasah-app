@@ -223,7 +223,7 @@ with tab_payment:
     with c1:
         pay_filter_month = st.selectbox("মাস ফিল্টার", months, index=datetime.now().month - 1)
     with c2:
-        pay_filter_class = st.selectbox("জاماআত ফিল্টার", classes)
+        pay_filter_class = st.selectbox("জামাআত ফিল্টার", classes)
         
     if uploaded_pay_file and pay_filter_class != "কোনো জামাত নেই":
         if st.button("এক্সেল ডাটা ডাটাবেজে যুক্ত করুন"):
