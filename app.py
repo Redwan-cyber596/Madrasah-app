@@ -17,7 +17,7 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
     
-    html, body, [data-testid="stSidebar"], .stMarkdown, p, h1, h2, h3, h4, h5, h6, span, label, input, button, select {
+    html, body, [data-testid="stSidebar"], .stMarkdown, p, h1, h2, h3, h4, h5, h6, label, input, select {
         font-family: 'SolaimanLipi', 'Hind Siliguri', sans-serif !important;
     }
     </style>
