@@ -217,7 +217,7 @@ with tab_home:
 # ==========================================
 with tab_payment:
     st.subheader("বাল্ক পেমেন্ট এক্সেল ফাইল আপলোড")
-   uploaded_pay_file = st.file_uploader("এক্সেল ফাইলটি ড্রপ করুন", type=["xlsx", "xls"], key="pay_upload")
+    uploaded_pay_file = st.file_uploader("এক্সেল ফাইলটি ড্রপ করুন", type=["xlsx", "xls"], key="pay_upload")
     
     c1, c2 = st.columns(2)
     with c1:
