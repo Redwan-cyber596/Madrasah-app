@@ -103,7 +103,7 @@ with tab_home:
         st.subheader("অনুসন্ধান ফিল্টার")
         selected_class = st.selectbox("জামাআত নির্বাচন করুন", classes, key="home_class")
         
-        khana_entry = st.text_input("খানা নম্বর লিখুন", value=st.session_state.khana_input, key="khana_field")
+        khana_entry = st.text_input("খানা নম্বর লিখুন", value=st.session_state.khana_input, key="khana_field_unique")
         
         student_found = None
         if khana_entry:
