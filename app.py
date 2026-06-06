@@ -207,9 +207,11 @@ with tab_home:
                 try:
                     next_khana = int(khana_clean) + 1
                     st.session_state.khana_input = str(next_khana)
+                    st.session_state.khana_field = str(next_khana) # সরাসরি উইজেটের মেমোরি আপডেট
                 except:
                     st.session_state.khana_input = ""
-                    
+                    st.session_state.khana_field = ""
+
                 st.rerun()
 
 # ==========================================
